@@ -1,0 +1,23 @@
+{% extends 'template.html' %}
+{% block  content %}
+
+<div class="container" >
+  <div class="align-baseline" >
+    <div class="row justify-content-center align-items-center" >
+      <div class="align-middle border rounded shadow w-50 h-50" style="min-width:80%;">
+        <div class="pt-3 pr-3 pl-3 mt-3 mr-3 ml-3 border rounded">
+          <h1> Contents of the note: </h1>
+        </div>
+        <div class="p-3 mb-3 mr-3 ml-3 border rounded">
+          {{ rendered | safe }}
+        </div>
+        <div class="pr-3 pl-3 mr-3 ml-3">
+          <form action={{ url_for('welcome') }}>
+            <button class="btn btn-secondary" type="submit">Back</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

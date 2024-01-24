@@ -1,0 +1,28 @@
+{% extends 'template.html' %}
+{% block  content %}
+
+<div class="container" >
+  <div class="align-baseline" >
+    <div class="row h-100 justify-content-center align-items-center" >
+      <div class="align-middle p-3 border rounded shadow ">
+        <h1 class="pb-3">Sign in</h1>
+        <form action={{ url_for('login') }} method="post">
+          <input class="form-control" placeholder="Username" type="text" id="username" name="username"><br>
+          <input class="form-control" placeholder="Password" type="password" id="password" name="password"><br>
+          <button class="btn btn-secondary" type="submit" value="Login">Sign in</button>
+        </form>
+        <form action={{ url_for('register') }}>
+          <button class="btn btn-secondary" type="submit" value="Register">Register</button>
+        </form>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div  class="text-align-left-wrap  m-1" style="width: 13em; font-size: 14px; color: RED;" >{{message}}</div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

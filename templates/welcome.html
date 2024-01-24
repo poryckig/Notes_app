@@ -1,0 +1,108 @@
+{% extends 'template.html' %}
+{% block  content %}
+
+<div class="container" >
+  <div class="align-baseline" >
+    <div class="row h-100 justify-content-center align-items-center" >
+      <div class="align-middle mw-10 p-3 border rounded shadow">
+
+        <div class="container-fluid">
+          <div class="row justify-content-between">
+              <div class="col-xs-6 align-self-start">
+                <h1>Welcome {{ username }}!</h1>
+              </div>
+              <div class="justify-content-end">
+                <div class="row justify-content-end">
+                  <div class="col-xs-6 align-self-end mr-3">
+                    <form action="{{ url_for('change_password') }}">
+                      <button  class="btn btn-secondary pull-right" type="submit">Change password</button>
+                    </form>
+                  </div>
+                  <div class="col-xs-6 align-self-end">
+                    <form action={{ url_for('logout') }} method="post">
+                      <button  class="btn btn-secondary pull-right  mr-3" type="submit">Log out</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+          </div>
+        </div>
+
+<form action={{ url_for('submit_note') }} method="post">
+  <label for="markdown">Input your new note:</label><br>
+  <div class="form-group row">
+    <div class="col-auto">
+      <input class="form-control" placeholder="Title" type="text" name="title" value={{title}}>
+    </div>
+  </div>
+  <textarea  class="form-control" id="markdown" name="markdown" rows="20" cols="100">{{raw_note}}</textarea>
+  <br>
+  <div class="form-check mt-2">
+    <input class="form-check-input" type="checkbox" name="public" id="public" >
+    <label class="form-check-label" for="public">Public</label>
+  </div>
+  <div class="form-check">
+    <input class="form-check-input" type="checkbox" name="encrypt" id="encrypt" >
+    <label class="form-check-label xl-1" for="encrypt">Encrypt</label>
+  </div>
+  <div class="form-group row g-2 mt-2">
+    <div class="col-auto">
+      <input class="form-control" placeholder="Encryption password" type="password" name="password">
+    </div>
+  </div>
+  <button class="btn btn-secondary" type="submit" value="Submit">Save the note</button>
+</form>
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+    <div  class="text-align-left-wrap  m-1" style="width: 13em; font-size: 14px; color: RED;" >{{ message }}</div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+{% if notes|length > 0 %}
+<h1> List of notes: </h1>
+<table class="table table-stripped table-hover">
+  <thead>
+    <tr>
+      <th scope="col">Lp.</th>
+      <th scope="col">Author</th>
+      <th scope="col">Title</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+{% for note in notes %}
+  <tr>
+    <th scope="row">{{loop.index}}</th>
+    <td>{{ note.1 }}</td>
+    <td>{{ note.2 }}</td>
+    <td>
+      <div class="justify-content-end">
+        <div class="row justify-content-end">
+          <div class="col-xs-6 align-self-end mr-3">
+            <form action="{{ url_for('get_note', rendered_id=note.0) }}">
+              <button class="btn btn-secondary btn-sm" type="submit">Look</button>
+            </form>
+          </div>
+          <div class="col-xs-6 align-self-end mr-3 {% if not note.1 == username %} invisible {% endif %}  ">
+            <form action="{{ url_for('delete_note', rendered_id=note.0) }}" method="post">
+              <button class="btn btn-danger btn-sm" type="submit">Delete</button>
+            </form>
+          </div>
+        </div>
+      </div>
+  
+    </td>
+  </tr>
+{% endfor %}
+  </tbody>
+
+{% endif %}
+</table>
+
+</div>
+</div>
+</div>
+</div>
+{% endblock %}
